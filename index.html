@@ -1,0 +1,110 @@
+<html>
+
+<meta charset="utf-8"/>
+
+<head>
+<title>Filter</title>
+</head>
+
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+<script src="https://unpkg.com/audioworklet-polyfill/dist/audioworklet-polyfill.js"></script>
+
+<script src="lib/midievents.js"></script>
+<script src="lib/MIDIFileHeader.js"></script>
+<script src="lib/MIDIFileTrack.js"></script>
+<script src="lib/MIDIFile.js"></script>
+
+<script src="webaudio.js"></script>
+<script src="fft.js"></script>
+<script src="utils.js"></script>
+<script src="wavegen.js"></script>
+<script src="instruments.js"></script>
+<script src="midi.js"></script>
+
+<script src="SGAudioFilePlayer.js"></script>
+<script src="SGPlot.js"></script>
+<script src="SGSpectrumAnalyser.js"></script>
+
+<div id="app">
+Instrument <select v-model="selectedInstrumentName">
+   <option v-for="(instr, name) in allInstruments">{{name}}</option>
+</select>
+<label><input type="checkbox" v-model="enableMicrophone">Microphone</label>
+<sg-audio-file-player :dest-audio-node="audioCtx.dest"></sg-audio-file-player>
+<br/>
+<sg-spectrum-visualizer-2d ref="visualizer2d" :analyser-node="analyser"></sg-spectrum-visualizer-2d>
+    <label><input type="checkbox" v-model="sharedState.OptimizePhases">Оптимизировать рандомизацию фазы</label>
+    <br/>
+    <label><input type="checkbox" v-model="sharedState.OptimizeErf">Оптимизировать erf</label>
+    <br/>
+    <label><input type="checkbox" v-model="sharedState.OptimizeIFFT">Оптимизировать IFFT</label>
+    <br/>
+</div>
+
+<script>
+let gState = {
+    OptimizePhases: true,
+    OptimizeErf: true,
+    OptimizeIFFT: false,
+};
+
+const app = new Vue({
+    el: '#app',
+    data: {
+        visualiserFftSize: 2048,
+        enableMicrophone: false,
+        midiState: gMidiState,
+        sharedState: gState,
+        allInstruments: gInstruments,
+        selectedInstrumentName: "AcousticGuitarNylon",
+    },
+    computed: {
+        audioCtx() {
+            return GetAudioContext();
+        },
+        analyser() {
+            const res = this.audioCtx.createAnalyser();
+            this.audioCtx.dest.connect(res);
+            return res;
+        },
+        instr() {
+            return this.midiState.Channels[0].CurrentInstrument;
+        },
+        karplusStrong() {
+            return this.instr.KarplusStrong || {};
+        }
+    },
+    watch: {
+        enableMicrophone(newValue, oldValue) {
+            if(!newValue === !oldValue) return;
+            GetMicrophoneSource().then(src => {
+                if(newValue) src.connect(this.analyser);
+                else src.disconnect(this.analyser);
+            }).catch(() => this.enableMicrophone = false);
+        },
+        selectedInstrumentName(newValue) {
+            this.midiState.Channels[0].CurrentInstrument = gInstruments[newValue];
+        }
+    },
+    created() {
+    },
+    mounted() {
+        document.body.addEventListener("keydown", event => {
+            GetAudioContext().resume();
+            if (event.code === "Backquote") {
+                this.$refs.visualizer2d.pause = !this.$refs.visualizer2d.pause;
+                return;
+            }
+        });
+    },
+    methods: {
+
+    },
+});
+</script>
+
+</body>
+
+</html>
