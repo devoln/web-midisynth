@@ -495,7 +495,7 @@ const gInstruments = {
 				NumHarmonics: 16,
 				Bandwidth: "4+4*x",
 				Amplitude: "1/sqrt(x)",
-				NumHarmonics: 100,
+				//NumHarmonics: 100,
 				//Bandwidth: 0.1,
 				//Amplitude: "0.8*(1-rand*0.5)/x",
 			}],
@@ -1723,3 +1723,132 @@ const gInstruments = {
 	},
 };
 
+// Отсчёт номеров инструментов с 0.
+const gInstrumentMapping = {
+	0: gInstruments.AcousticPiano,
+	1: gInstruments.BrightAcousticPiano, //
+	2: gInstruments.AcousticPiano, //
+	3: gInstruments.AcousticPiano, //
+	4: gInstruments.AcousticPiano, //Electric Piano
+	5: gInstruments.AcousticPiano, //Electric Piano 2
+	6: gInstruments.AcousticPiano, //
+	7: gInstruments.Clav,
+
+	8: gInstruments.Celesta,
+	9: gInstruments.Glockenspiel,
+	10: gInstruments.MusicBox,
+	11: gInstruments.Vibraphone,
+	12: gInstruments.Marimba,
+	13: gInstruments.Xylophone,
+	14: gInstruments.Marimba, //Tubular Bells
+	15: gInstruments.Kalimba, //Dulcimer
+
+	16: gInstruments.SynthOrgan,
+	17: gInstruments.PercussiveOrgan,
+	18: gInstruments.RockOrgan,
+	19: gInstruments.SynthOrgan,
+	20: gInstruments.SynthOrgan,
+	21: gInstruments.Accordion, //Accordion
+	22: gInstruments.Harmonica,
+	23: gInstruments.SynthOrgan,
+
+	24: gInstruments.AcousticGuitarNylon, //Accoustic Guitar (nylon)
+	25: gInstruments.AcousticGuitarSteel, //Accoustic Guitar (Steel)
+	26: gInstruments.ElectricGuitarJazz, //Electric Guitar (jazz)
+	27: gInstruments.ElectricGuitarClean, //Electric Guitar (clean)
+	28: gInstruments.ElectricGuitarMuted, //Electric Guitar (muted)
+	29: gInstruments.AcousticGuitarNylon,
+	30: gInstruments.AcousticGuitarNylon,
+	31: gInstruments.AcousticGuitarNylon,
+
+	32: gInstruments.AcousticBass, //Acoustic Bass
+	33: gInstruments.ElectricBassPick, //ElectricBassFinger
+	34: gInstruments.ElectricBassPick,
+	35: gInstruments.FretlessBass,
+	36: gInstruments.SlapBass,
+	37: gInstruments.SlapBass,
+	38: gInstruments.SynthBass1,
+	39: gInstruments.SynthBass2,
+
+	40: gInstruments.Violin, //Violin
+	41: gInstruments.Violin, //Viola
+	42: gInstruments.Violin, //Cello
+	44: gInstruments.TremoloStrings,
+	45: gInstruments.PizzicatoStrings,
+	46: gInstruments.AcousticGuitarNylon, //Orchestral Strings
+	47: gInstruments.Timpani,
+	48: gInstruments.StringEnsemble, //String Ensemble 1
+	49: gInstruments.StringEnsemble2, //String Ensemble 2
+	50: gInstruments.SynthStrings, //Synth Strings 1
+	51: gInstruments.Pad8Sweep, //Synth Strings 2
+	52: gInstruments.ChoirAahs,
+	53: gInstruments.VoiceOohs,
+	54: gInstruments.SynthVoice,
+
+	55: gInstruments.OrchestraHit,
+	56: gInstruments.Trumpet,
+	57: gInstruments.TrumpetOld,
+	58: gInstruments.Tuba,
+	59: gInstruments.TrumpetOld,
+	60: gInstruments.FrenchHorn,
+	61: gInstruments.BrassSection,
+	62: gInstruments.SynthBrass,
+	63: gInstruments.SynthBrass,
+	64: gInstruments.Sax,
+	65: gInstruments.Sax,
+	66: gInstruments.Sax,
+	67: gInstruments.Sax,
+	68: gInstruments.Oboe,
+	69: gInstruments.EnglishHorn,
+	70: gInstruments.TrumpetOld,
+	71: gInstruments.Clarinet,
+	72: gInstruments.Flute, //Piccolo
+	73: gInstruments.Flute,
+	74: gInstruments.Recorder,
+	75: gInstruments.Flute,
+	76: gInstruments.Whistle,
+	77: gInstruments.Whistle,
+	78: gInstruments.Whistle,
+	79: gInstruments.Ocarina,
+	80: gInstruments.Lead1Square,
+	81: gInstruments.Lead2Sawtooth,
+	82: gInstruments.Calliope,
+	83: gInstruments.SynthVoice,
+	84: gInstruments.Lead5Charang,
+	85: gInstruments.SynthVoice,
+	86: gInstruments.SynthStrings, //TODO: Lead 7 (fifths)
+	87: gInstruments.BassLead,
+	88: gInstruments.NewAge,
+	89: gInstruments.Pad8Sweep,
+	90: gInstruments.Pad3Polysynth,
+	91: gInstruments.Pad4Choir,
+	92: gInstruments.Pad5Bowed,
+	93: gInstruments.Pad8Sweep,
+	94: gInstruments.Pad7Halo,
+	95: gInstruments.Pad8Sweep,
+	96: gInstruments.Fx1Rain,
+	97: gInstruments.Fx2SoundTrack,
+	98: gInstruments.Vibraphone, //FX3 (crystal)
+	99: gInstruments.Fx4Atmosphere,
+	100: gInstruments.SynthVoice,
+	101: gInstruments.Fx6Goblins,
+	102: gInstruments.Pad8Sweep,
+	103: gInstruments.SynthVoice, //FX8 (sci-fi)
+	104: gInstruments.Sitar,
+	105: gInstruments.AcousticPiano, //
+	106: gInstruments.Timpani, //TODO: Shamisen
+	107: gInstruments.AcousticPiano, //
+	108: gInstruments.Kalimba,
+	109: gInstruments.Oboe, //TODO: Bagpipe
+	110: gInstruments.Fiddle,
+	111: gInstruments.Fiddle, //TODO: Shanai
+	112: gInstruments.Kalimba,
+	113: gInstruments.Marimba, //TODO: Tinkle Bell
+	114: gInstruments.SteelDrums,
+	119: gInstruments.ReverseCymbal,
+	122: gInstruments.Seashore,
+	124: gInstruments.PhoneRing,
+	125: gInstruments.Helicopter,
+	126: gInstruments.Applause,
+	127: gInstruments.Gunshot,
+};
