@@ -24,7 +24,6 @@
 <script src="midi.js"></script>
 
 <script src="SGAudioFilePlayer.js"></script>
-<script src="SGPlot.js"></script>
 <script src="SGSpectrumAnalyser.js"></script>
 
 <div id="app">
@@ -35,18 +34,12 @@ Instrument <select v-model="selectedInstrumentName">
 <sg-audio-file-player :dest-audio-node="audioCtx.dest"></sg-audio-file-player>
 <br/>
 <sg-spectrum-visualizer-2d ref="visualizer2d" :analyser-node="analyser"></sg-spectrum-visualizer-2d>
-    <label><input type="checkbox" v-model="sharedState.OptimizePhases">Оптимизировать рандомизацию фазы</label>
-    <br/>
-    <label><input type="checkbox" v-model="sharedState.OptimizeErf">Оптимизировать erf</label>
-    <br/>
     <label><input type="checkbox" v-model="sharedState.OptimizeIFFT">Оптимизировать IFFT</label>
     <br/>
 </div>
 
 <script>
 let gState = {
-    OptimizePhases: true,
-    OptimizeErf: true,
     OptimizeIFFT: false,
 };
 
