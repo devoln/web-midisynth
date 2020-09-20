@@ -3,7 +3,7 @@
 <meta charset="utf-8"/>
 
 <head>
-<title>Filter</title>
+<title>Procedural MIDI Synthesizer</title>
 </head>
 
 <body>
@@ -34,7 +34,6 @@ Instrument <select v-model="selectedInstrumentName">
 <sg-audio-file-player :dest-audio-node="audioCtx.dest"></sg-audio-file-player>
 <br/>
 <sg-spectrum-visualizer-2d ref="visualizer2d" :analyser-node="analyser"></sg-spectrum-visualizer-2d>
-    <label><input type="checkbox" v-model="sharedState.OptimizeIFFT">Оптимизировать IFFT</label>
     <br/>
 </div>
 
@@ -42,6 +41,38 @@ Instrument <select v-model="selectedInstrumentName">
 let gState = {
     OptimizeIFFT: false,
 };
+
+function KeyboardKeyToMidiNote(keyCode)
+{
+    const keyToMidiTable =
+    {
+        "KeyZ": 0, "KeyS": 1,
+        "KeyX": 2, "KeyD": 3,
+        "KeyC": 4,
+        "KeyV": 5, "KeyG": 6,
+        "KeyB": 7, "KeyH": 8,
+        "KeyN": 9, "KeyJ": 10,
+        "KeyM": 11,
+        "Comma": 12, "KeyL": 13,
+        "Period": 14, "Semicolon": 15,
+        "Slash": 16,
+
+        "KeyQ": 12, "Digit2": 13,
+        "KeyW": 14, "Digit3": 15,
+        "KeyE": 16,
+        "KeyR": 17, "Digit5": 18,
+        "KeyT": 19, "Digit6": 20,
+        "KeyY": 21, "Digit7": 22,
+        "KeyU": 23,
+        "KeyI": 24, "Digit9": 25,
+        "KeyO": 26, "Digit0": 27,
+        "KeyP": 28,
+        "BracketLeft": 29, "Equal": 30,
+        "BracketRight": 31, "Backspace": 32,
+    };
+    const tone = keyToMidiTable[keyCode];
+    return tone === undefined? null: 36+tone;
+}
 
 const app = new Vue({
     el: '#app',
@@ -65,9 +96,6 @@ const app = new Vue({
         instr() {
             return this.midiState.Channels[0].CurrentInstrument;
         },
-        karplusStrong() {
-            return this.instr.KarplusStrong || {};
-        }
     },
     watch: {
         enableMicrophone(newValue, oldValue) {
@@ -86,10 +114,24 @@ const app = new Vue({
     mounted() {
         document.body.addEventListener("keydown", event => {
             GetAudioContext().resume();
+            if(!event.code || event.repeat) return;
             if (event.code === "Backquote") {
                 this.$refs.visualizer2d.pause = !this.$refs.visualizer2d.pause;
                 return;
             }
+            //console.log(event.code);
+            let midiNote = KeyboardKeyToMidiNote(event.code);
+            if(midiNote !== null)
+            {
+                if(!gMidiState.Channels[0].PlayingNotes || !gMidiState.Channels[0].PlayingNotes[midiNote])
+                    OnMIDIMessage({data: [MidiEventTypes.NoteOn << 4, midiNote, 127]});
+            }
+        });
+        document.body.addEventListener("keyup", event => {
+            GetAudioContext().resume();
+            if(!event.code || event.repeat) return;
+            let midiNote = KeyboardKeyToMidiNote(event.code);
+            if(midiNote !== null) OnMIDIMessage({data: [MidiEventTypes.NoteOff << 4, midiNote]});
         });
     },
     methods: {
