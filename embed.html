@@ -1,0 +1,147 @@
+<html>
+
+<meta charset="utf-8"/>
+
+<head>
+<title>Procedural MIDI Synthesizer Embed</title>
+<style>
+    .button::before {
+    border-radius: 3px;
+    box-shadow: #959595 0 2px 5px;
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0;
+    padding: 2px 0 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    }
+        
+    .button:active::before {padding: 1px 0 0;}
+    
+    .button {
+    background: #eee;
+    background: linear-gradient(#eee, #ccc);
+    border: solid 1px #d0d0d0;
+    border-bottom: solid 3px #b2b1b1;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 1px #f5f5f5;
+    color: #555;
+    display: inline-block;
+    font: bold 12px Arial, Helvetica, Clean, sans-serif;
+    padding: 10px 20px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #fafafa;
+    background-size: 100% 140px;
+    background-position: 0px -70px;
+    transition: background-position 1s, color 0.5s;
+    }
+        
+    .button:hover {
+    border: solid 1px #c2c2c2;
+    border-bottom: solid 3px #b2b1b1;
+    box-shadow: inset 0 0 0 1px #efefef;
+    background-position: 0px 0px;
+    color: #565
+    }
+        
+    .button:active {
+    border: solid 1px #959595;
+    box-shadow: inset 0 10px 15px 0 #c4c4c4;
+    background-position: 0px -20px;
+    top:2px;
+    }
+    
+    .button.green {
+    background: #cae285;
+    background: -webkit-gradient(linear, 0 0, 0 bottom, from(#cae285), to(#a3cd5a));
+    background: linear-gradient(#cae285, #a3cd5a);
+    border: solid 1px #aad063;
+    border-bottom: solid 3px #799545;
+    box-shadow: inset 0 0 0 1px #e0eeb6;
+    color: #5d7731;
+    text-shadow: 0 1px 0 #d0e5a4;
+    background-size: 100% 140px;
+    background-position: 0px -70px;
+    transition: background-position 1s, border 0.5s, border-bottom 0.5s, box-shadow 0.3s;
+    }
+    
+    .button.green:hover {
+    border: solid 1px #98b85b;
+    border-bottom: solid 3px #799545;
+    box-shadow: inset 0 0 0 1px #cce3a1;
+    background-position: 0px 0px;
+    }
+    
+    .button.green:active {
+    border: solid 1px #6e883f;
+    box-shadow: inset 0 10px 15px 0 #90b352;
+    background-position: 0px -40px;
+    }
+</style>
+</head>
+
+<body>
+<script src="lib/midievents.js"></script>
+<script src="lib/MIDIFileHeader.js"></script>
+<script src="lib/MIDIFileTrack.js"></script>
+<script src="lib/MIDIFile.js"></script>
+
+<script src="webaudio.js"></script>
+<script src="fft.js"></script>
+<script src="utils.js"></script>
+<script src="wavegen.js"></script>
+<script src="instruments.js"></script>
+<script src="midi.js"></script>
+
+<button id="ePlayBtn" onclick="OnPlayClick()" class="button green" disabled>&#9654;</button>
+
+<script>
+function DownloadBinaryFileAsArrayBuffer(url, successCallback)
+{
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function()
+	{
+		if(xhr.readyState == xhr.DONE)
+		{
+            console.log("file, status " + xhr.status + ", " + xhr.statusText + "url: " + url);
+			if(xhr.status == 200 && xhr.response) successCallback(xhr.response);
+			else console.error("Couldn't load file, status " + xhr.status + ", " + xhr.statusText);
+		}
+	};
+	xhr.open("GET", url, true);
+	xhr.responseType = "arraybuffer";
+	xhr.send();
+}
+
+let gMidiUrl = location.search.substr(1);
+
+let gMidiFileBuffer;
+DownloadBinaryFileAsArrayBuffer(gMidiUrl, function(midiFileBuffer) {
+    gMidiFileBuffer = midiFileBuffer;
+    ePlayBtn.disabled = false;
+});
+
+let gPlayingMidi;
+
+function OnPlayClick()
+{
+    if(gPlayingMidi)
+    {
+        gPlayingMidi.Stop();
+        gPlayingMidi = null;
+        ePlayBtn.innerHTML = "&#9654;";
+        return;
+    }
+    console.log(gMidiFileBuffer)
+    gPlayingMidi = PlayMidiFile(gMidiFileBuffer);
+    ePlayBtn.innerHTML = "&#9632;";
+}
+</script>
+
+</body>
+
+</html>
