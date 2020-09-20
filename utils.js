@@ -7,8 +7,8 @@ function CachedWaveGenerator(waveGenerator)
 		if(!waveTableCache[freq])
 			waveTableCache[freq] = waveGenerator(freq);
 		const res = waveTableCache[freq];
-		console.log("max sample value: " + Math.max.apply(null, res));
-		console.log("avg sample value: " + res.reduce((a, b) => Math.abs(a) + Math.abs(b), 0)/res.length);
+		//console.log("max sample value: " + Math.max.apply(null, res));
+		//console.log("avg sample value: " + res.reduce((a, b) => Math.abs(a) + Math.abs(b), 0)/res.length);
 		return waveTableCache[freq];
 	}
 }
@@ -237,7 +237,7 @@ function InitInstrument(instr)
 			source.stop(t);
 		};
 		const t4 = performance.now();
-		console.log(`${t4-t0} ms = (${t1-t0}) + ${t2-t1} + (${t3-t2}) + ${t4-t3}`);
+		//console.log(`${t4-t0} ms = (${t1-t0}) + ${t2-t1} + (${t3-t2}) + ${t4-t3}`);
 		return source;
 	}
 }
