@@ -107,7 +107,6 @@ function DownloadBinaryFileAsArrayBuffer(url, successCallback)
 	{
 		if(xhr.readyState == xhr.DONE)
 		{
-            console.log("file, status " + xhr.status + ", " + xhr.statusText + "url: " + url);
 			if(xhr.status == 200 && xhr.response) successCallback(xhr.response);
 			else console.error("Couldn't load file, status " + xhr.status + ", " + xhr.statusText);
 		}
@@ -136,7 +135,6 @@ function OnPlayClick()
         ePlayBtn.innerHTML = "&#9654;";
         return;
     }
-    console.log(gMidiFileBuffer)
     gPlayingMidi = PlayMidiFile(gMidiFileBuffer);
     ePlayBtn.innerHTML = "&#9632;";
 }

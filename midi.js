@@ -154,7 +154,6 @@ function OnMIDIMessage(message)
 }
 
 function OnMidiSuccess(midi) {
-    console.log('Got midi!', midi);
     let inputs = midi.inputs.values();
 
     for (let input = inputs.next();

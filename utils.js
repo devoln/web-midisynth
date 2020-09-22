@@ -128,22 +128,25 @@ function InitInstrument(instr)
 	{
 		if(!audioCtx) audioCtx = GetAudioContext();
 		if(!destinationNode) destinationNode = audioCtx.dest;
-		const t0 = performance.now();
+		//const t0 = performance.now();
 		const wave = this.Cache.PeriodicWaveGenerator(freq, velocity);
-		const t1 = performance.now();
+		//const t1 = performance.now();
 		const playbackSpeed = wave.playbackSpeed || 1;
 		const input = wave.samples || wave;
 
-		const t2 = performance.now();
+		//const t2 = performance.now();
 		let audioBuffer;
 		let loop = true;
 		let offset = 0;
 		let volume = Math.exp(velocity-1)*this.Volume;
 		if(this.Cache.Filter)
 		{
-			audioBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate*8, audioCtx.sampleRate);
+			audioBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate*5, audioCtx.sampleRate);
 			let dst = audioBuffer.getChannelData(0);
 			this.Cache.Filter(dst, input, freq);
+			//const fadeOffSamples = (0.1*audioCtx.sampleRate)|0;
+			//for(let i = dst.length - fadeOffSamples, mul = 1, dmul = -1/fadeOffSamples; i < dst.length; i++, mul += dmul)
+			//	dst[i] *= mul;
 			loop = false;
 		}
 		else {
@@ -154,7 +157,7 @@ function InitInstrument(instr)
 			audioBuffer = wave.audioBuffer;
 			offset = Math.random()*audioBuffer.duration;
 		}
-		const t3 = performance.now();
+		//const t3 = performance.now();
 
 		let source = audioCtx.createBufferSource();
 		source.buffer = audioBuffer;
@@ -236,7 +239,7 @@ function InitInstrument(instr)
 			if(this.Envelope.CutoffFreq) biquadFilter.frequency.linearRampToValueAtTime(Math.max(this.Envelope.CutoffFreq[this.Envelope.CutoffFreq.length-1], 1), t);
 			source.stop(t);
 		};
-		const t4 = performance.now();
+		//const t4 = performance.now();
 		//console.log(`${t4-t0} ms = (${t1-t0}) + ${t2-t1} + (${t3-t2}) + ${t4-t3}`);
 		return source;
 	}
