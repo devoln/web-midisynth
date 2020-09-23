@@ -1704,7 +1704,7 @@ const gInstruments = {
 		TableSize: 32768,
 		Volume: 0.2,
 	},
-	OverdrivenGuitar: { //TODO: это кандидат на перегруженную гитару, но пока перегрузка не реализована
+	OverdrivenGuitar: { //TODO: not finished
 		Envelope: {
 			Segments: [0.005, 0.7],
 			Volume: [0, 1, 0],
@@ -1723,7 +1723,6 @@ const gInstruments = {
 	},
 };
 
-// Отсчёт номеров инструментов с 0.
 const gInstrumentMapping = {
 	0: gInstruments.AcousticPiano,
 	1: gInstruments.BrightAcousticPiano, //
