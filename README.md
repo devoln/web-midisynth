@@ -34,8 +34,3 @@ This is a prototype, don't expect any stability from it. Currently it lacks API,
 
 Use it for fun or educational purposes however you want. If you want to use it in a commercial project, please contact me.
 
-
-
-## Support me on Patreon
-
-https://www.patreon.com/devoln
